@@ -58,7 +58,7 @@ public class MakeScenario {
 		new MatsimNetworkReader(scenario.getNetwork()).readFile("network.xml.gz");
 
 		// Debug: Scale down for testing purposes already in the beginning
-		// new Downsample(scenarioScale, random).run(scenario.getPopulation());
+		new Downsample(scenarioScale, random).run(scenario.getPopulation());
 
 		// GENERAL PREPARATION AND FIXING
 
