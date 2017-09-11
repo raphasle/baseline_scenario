@@ -15,7 +15,7 @@ import ch.ethz.matsim.mode_choice.mnl.BasicModeChoiceParameters;
 public class RunScenario {
 	static public void main(String[] args) {
 		Config config = ConfigUtils.loadConfig(args[0]);
-		
+
 		config.global().setNumberOfThreads(Integer.parseInt(args[1]));
 		config.qsim().setNumberOfThreads(Integer.parseInt(args[2]));
 		

@@ -176,15 +176,15 @@ public class UserMeeting {
 
 		ModeRoutingParams walkRoutingParams = config.plansCalcRoute().getModeRoutingParams().get("walk");
 		walkRoutingParams.setBeelineDistanceFactor(1.6);
-		walkRoutingParams.setTeleportedModeSpeed(5.0);
+		walkRoutingParams.setTeleportedModeSpeed(5.0 * 1000.0 / 3600.0);
 
 		ModeRoutingParams bikeRoutingParams = config.plansCalcRoute().getModeRoutingParams().get("bike");
 		bikeRoutingParams.setBeelineDistanceFactor(1.6);
-		bikeRoutingParams.setTeleportedModeSpeed(11.0);
+		bikeRoutingParams.setTeleportedModeSpeed(11.0 * 1000.0 / 3600.0);
 
 		ModeRoutingParams ptRoutingParams = config.plansCalcRoute().getModeRoutingParams().get("pt");
 		ptRoutingParams.setTeleportedModeFreespeedFactor(null);
 		ptRoutingParams.setBeelineDistanceFactor(2.3);
-		ptRoutingParams.setTeleportedModeSpeed(12.0);
+		ptRoutingParams.setTeleportedModeSpeed(12.0 * 1000.0 / 3600.0);
 	}
 }
