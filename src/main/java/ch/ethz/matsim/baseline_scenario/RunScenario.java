@@ -11,6 +11,7 @@ import org.matsim.core.scenario.ScenarioUtils;
 
 import ch.ethz.matsim.baseline_scenario.scoring.BaselineScoringFunctionFactory;
 import ch.ethz.matsim.mode_choice.mnl.BasicModeChoiceParameters;
+import ch.ethz.matsim.mode_choice.run.RemoveLongPlans;
 
 public class RunScenario {
 	static public void main(String[] args) {
@@ -33,6 +34,8 @@ public class RunScenario {
 		
 		Scenario scenario = ScenarioUtils.loadScenario(config);
 		Controler controler = new Controler(scenario);
+		
+		new RemoveLongPlans(10).run(scenario.getPopulation());
 		
 		UserMeeting.applyModeChoice(controler);
 
