@@ -151,22 +151,22 @@ public class UserMeeting {
 
 		ModeParams carParameters = new ModeParams("car");
 		carParameters.setConstant(0.0);
-		carParameters.setMarginalUtilityOfTraveling(-23.29 / 3600.0);
+		carParameters.setMarginalUtilityOfTraveling(-23.29);
 		carParameters.setMonetaryDistanceRate(-0.62 / 1000.0);
 
 		ModeParams ptParameters = new ModeParams("pt");
 		ptParameters.setConstant(0.0);
-		ptParameters.setMarginalUtilityOfTraveling(-14.43 / 3600.0);
+		ptParameters.setMarginalUtilityOfTraveling(-14.43);
 		ptParameters.setMonetaryDistanceRate(-0.5 / 1000.0);
 
 		ModeParams walkParameters = new ModeParams("walk");
 		walkParameters.setConstant(0.0);
-		walkParameters.setMarginalUtilityOfTraveling(-33.2 / 3600.0);
+		walkParameters.setMarginalUtilityOfTraveling(-33.2);
 		walkParameters.setMonetaryDistanceRate(0.0);
 
 		ModeParams bikeParameters = new ModeParams("bike");
 		bikeParameters.setConstant(0.0);
-		bikeParameters.setMarginalUtilityOfTraveling(-73.2 / 3600.0);
+		bikeParameters.setMarginalUtilityOfTraveling(-73.2);
 		bikeParameters.setMonetaryDistanceRate(0.0);
 
 		config.planCalcScore().addModeParams(carParameters);
