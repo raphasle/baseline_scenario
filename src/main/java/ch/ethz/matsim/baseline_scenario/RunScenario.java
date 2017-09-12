@@ -22,12 +22,18 @@ public class RunScenario {
 		
 		UserMeeting.applyParameters(config);
 		
+		boolean useBestResponse = false;
+		
 		if (args[3].equals("old")) {
 			config.controler().setOutputDirectory("simulation_old");
 			UserMeeting.applyReplanningForSubtourModeChoice(config);
 		} else if (args[3].equals("new")) {
 			config.controler().setOutputDirectory("simulation_new");
 			UserMeeting.applyReplanningForModeChoice(config);
+		} else if (args[3].equals("br")) {
+			config.controler().setOutputDirectory("simulation_br");
+			UserMeeting.applyReplanningForModeChoice(config);
+			useBestResponse = true;
 		} else {
 			throw new IllegalStateException();
 		}
@@ -37,7 +43,7 @@ public class RunScenario {
 		
 		new RemoveLongPlans(10).run(scenario.getPopulation());
 		
-		UserMeeting.applyModeChoice(controler);
+		UserMeeting.applyModeChoice(controler, useBestResponse);
 
 		controler.addOverridingModule(new AbstractModule() {
 			@Override

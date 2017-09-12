@@ -37,7 +37,7 @@ import ch.ethz.matsim.mode_choice.replanning.ModeChoiceStrategy;
 import ch.ethz.matsim.mode_choice.utils.QueueBasedThreadSafeDijkstra;
 
 public class UserMeeting {
-	static public void applyModeChoice(Controler controler) {
+	static public void applyModeChoice(Controler controler, boolean useBestResponse) {
 		controler.addOverridingModule(new AbstractModule() {
 			@Override
 			public void install() {
@@ -66,7 +66,7 @@ public class UserMeeting {
 					PlansCalcRouteConfigGroup routeConfig) {
 				ChainAlternatives chainAlternatives = new TripChainAlternatives();
 				ModeChoiceMNL model = new ModeChoiceMNL(MatsimRandom.getRandom(), chainAlternatives, network,
-						ModeChoiceMNL.Mode.SAMPLING);
+						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING);
 
 				BasicModeChoiceParameters carParameters = new BasicModeChoiceParameters(0.0, -0.62 / 1000.0,
 						-23.29 / 3600.0, true);
