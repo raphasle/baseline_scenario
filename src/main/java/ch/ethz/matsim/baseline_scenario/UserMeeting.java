@@ -64,7 +64,7 @@ public class UserMeeting {
 			public ModeChoiceModel provideModeChoiceModel(Network network, @Named("car") TravelTime travelTime,
 					GlobalConfigGroup config, @Named("car") PredictionCache carCache,
 					PlansCalcRouteConfigGroup routeConfig) {
-				ChainAlternatives chainAlternatives = new TripChainAlternatives();
+				ChainAlternatives chainAlternatives = new TripChainAlternatives(true);
 				ModeChoiceMNL model = new ModeChoiceMNL(MatsimRandom.getRandom(), chainAlternatives, network,
 						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING);
 
