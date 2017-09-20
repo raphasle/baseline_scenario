@@ -53,6 +53,7 @@ public class BaselineScoringFunctionFactory implements ScoringFunctionFactory {
 					activityBuilder.setEarliestEndTime((Double) population.getPersonAttributes().getAttribute(person.getId().toString(), "earliestEndTime_" + activity.getType()));
 					activityBuilder.setLatestStartTime((Double) population.getPersonAttributes().getAttribute(person.getId().toString(), "latestStartTime_" + activity.getType()));
 					activityBuilder.setZeroUtilityComputation(new ActivityUtilityParameters.SameAbsoluteScore());					
+					activityBuilder.setScoreAtAll(false);
 					
 					scoringBuilder.setActivityParameters(activity.getType(), activityBuilder);
 				}

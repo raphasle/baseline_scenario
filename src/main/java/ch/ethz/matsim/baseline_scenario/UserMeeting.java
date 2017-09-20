@@ -148,6 +148,8 @@ public class UserMeeting {
 
 	static public void applyParameters(Config config) {
 		config.planCalcScore().setMarginalUtilityOfMoney(1.0);
+		config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(0.0);
+		config.planCalcScore().setMarginalUtlOfWaitingPt_utils_hr(0.0);
 
 		ModeParams carParameters = new ModeParams("car");
 		carParameters.setConstant(0.0);
