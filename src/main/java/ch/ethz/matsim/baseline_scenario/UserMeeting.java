@@ -1,7 +1,14 @@
 package ch.ethz.matsim.baseline_scenario;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Network;
+import org.matsim.api.core.v01.population.Person;
 import org.matsim.core.config.Config;
+import org.matsim.core.config.ConfigGroup;
 import org.matsim.core.config.groups.GlobalConfigGroup;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ModeParams;
 import org.matsim.core.config.groups.PlansCalcRouteConfigGroup;
@@ -20,6 +27,7 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 import ch.ethz.matsim.mode_choice.ModeChoiceModel;
+import ch.ethz.matsim.mode_choice.alternatives.AsMatsimChainAlternatives;
 import ch.ethz.matsim.mode_choice.alternatives.ChainAlternatives;
 import ch.ethz.matsim.mode_choice.alternatives.TripChainAlternatives;
 import ch.ethz.matsim.mode_choice.mnl.BasicModeChoiceAlternative;
@@ -34,6 +42,7 @@ import ch.ethz.matsim.mode_choice.mnl.prediction.PredictionCache;
 import ch.ethz.matsim.mode_choice.mnl.prediction.PredictionCacheCleaner;
 import ch.ethz.matsim.mode_choice.mnl.prediction.TripPredictor;
 import ch.ethz.matsim.mode_choice.replanning.ModeChoiceStrategy;
+import ch.ethz.matsim.mode_choice.utils.MatsimAlternativesReader;
 import ch.ethz.matsim.mode_choice.utils.QueueBasedThreadSafeDijkstra;
 
 public class UserMeeting {
@@ -64,7 +73,22 @@ public class UserMeeting {
 			public ModeChoiceModel provideModeChoiceModel(Network network, @Named("car") TravelTime travelTime,
 					GlobalConfigGroup config, @Named("car") PredictionCache carCache,
 					PlansCalcRouteConfigGroup routeConfig) {
-				ChainAlternatives chainAlternatives = new TripChainAlternatives(true);
+				
+				//ChainAlternatives chainAlternatives = new TripChainAlternatives(true);
+				
+				MatsimAlternativesReader reader = new MatsimAlternativesReader();
+				
+				Map<Id<Person>, List<List<String>>> alternatives;
+				
+				try {
+					alternatives = reader.read(ConfigGroup.getInputFileURL(getConfig().getContext(), "chains.dat").getFile().toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new RuntimeException();
+				}
+				
+				ChainAlternatives chainAlternatives = new AsMatsimChainAlternatives(alternatives);
+				
 				ModeChoiceMNL model = new ModeChoiceMNL(MatsimRandom.getRandom(), chainAlternatives, network,
 						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING);
 
