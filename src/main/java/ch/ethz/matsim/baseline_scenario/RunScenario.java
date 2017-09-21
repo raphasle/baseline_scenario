@@ -10,6 +10,7 @@ import org.matsim.core.controler.Controler;
 import org.matsim.core.scenario.ScenarioUtils;
 
 import ch.ethz.matsim.baseline_scenario.scoring.BaselineScoringFunctionFactory;
+import ch.ethz.matsim.mode_choice.analysis.VisitedChainCounter;
 import ch.ethz.matsim.mode_choice.mnl.BasicModeChoiceParameters;
 import ch.ethz.matsim.mode_choice.run.RemoveLongPlans;
 
@@ -49,6 +50,7 @@ public class RunScenario {
 			@Override
 			public void install() {
 				bindScoringFunctionFactory().to(BaselineScoringFunctionFactory.class).asEagerSingleton();
+				addControlerListenerBinding().to(VisitedChainCounter.class);
 			}
 		});
 		
