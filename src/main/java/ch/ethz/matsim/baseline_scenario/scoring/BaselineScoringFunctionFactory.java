@@ -63,10 +63,10 @@ public class BaselineScoringFunctionFactory implements ScoringFunctionFactory {
 		ScoringParameters parameters = scoringBuilder.build();
 
 		SumScoringFunction sumScoringFunction = new SumScoringFunction();
-		sumScoringFunction.addScoringFunction(new CharyparNagelActivityScoring(parameters));
+		//sumScoringFunction.addScoringFunction(new CharyparNagelActivityScoring(parameters));
 		sumScoringFunction.addScoringFunction(new CharyparNagelLegScoring(parameters, network));
-		sumScoringFunction.addScoringFunction(new CharyparNagelMoneyScoring(parameters));
-		sumScoringFunction.addScoringFunction(new CharyparNagelAgentStuckScoring(parameters));
+		//sumScoringFunction.addScoringFunction(new CharyparNagelMoneyScoring(parameters));
+		//sumScoringFunction.addScoringFunction(new CharyparNagelAgentStuckScoring(parameters));
 		
 		return sumScoringFunction;
 	}

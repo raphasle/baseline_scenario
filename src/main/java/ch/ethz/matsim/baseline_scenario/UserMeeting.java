@@ -45,7 +45,7 @@ import ch.ethz.matsim.mode_choice.replanning.ModeChoiceStrategy;
 import ch.ethz.matsim.mode_choice.utils.MatsimAlternativesReader;
 import ch.ethz.matsim.mode_choice.utils.QueueBasedThreadSafeDijkstra;
 
-public class UserMeeting {
+public class UserMeeting {	
 	static public void applyModeChoice(Controler controler, boolean useBestResponse) {
 		controler.addOverridingModule(new AbstractModule() {
 			@Override

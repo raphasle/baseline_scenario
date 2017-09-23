@@ -10,6 +10,8 @@ import org.matsim.core.controler.Controler;
 import org.matsim.core.scenario.ScenarioUtils;
 
 import ch.ethz.matsim.baseline_scenario.scoring.BaselineScoringFunctionFactory;
+import ch.ethz.matsim.baseline_scenario.scoring.ScoreDistributionListener;
+import ch.ethz.matsim.baseline_scenario.utils.ResetLegsToWalk;
 import ch.ethz.matsim.mode_choice.analysis.VisitedChainCounter;
 import ch.ethz.matsim.mode_choice.mnl.BasicModeChoiceParameters;
 import ch.ethz.matsim.mode_choice.run.RemoveLongPlans;
@@ -43,6 +45,7 @@ public class RunScenario {
 		Controler controler = new Controler(scenario);
 		
 		new RemoveLongPlans(10).run(scenario.getPopulation());
+		new ResetLegsToWalk().run(scenario.getPopulation());
 		
 		UserMeeting.applyModeChoice(controler, useBestResponse);
 
@@ -51,6 +54,7 @@ public class RunScenario {
 			public void install() {
 				bindScoringFunctionFactory().to(BaselineScoringFunctionFactory.class).asEagerSingleton();
 				addControlerListenerBinding().to(VisitedChainCounter.class);
+				addControlerListenerBinding().to(ScoreDistributionListener.class);
 			}
 		});
 		
