@@ -55,6 +55,7 @@ public class RunScenario {
 				bindScoringFunctionFactory().to(BaselineScoringFunctionFactory.class).asEagerSingleton();
 				addControlerListenerBinding().to(VisitedChainCounter.class);
 				addControlerListenerBinding().to(ScoreDistributionListener.class);
+				addControlerListenerBinding().to(ModeShareListener.class);
 			}
 		});
 		
