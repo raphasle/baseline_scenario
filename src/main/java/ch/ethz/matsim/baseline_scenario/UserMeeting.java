@@ -1,6 +1,7 @@
 package ch.ethz.matsim.baseline_scenario;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -108,9 +109,11 @@ public class UserMeeting {
 				TripPredictor bikePredictor = new FixedSpeedPredictor(routeConfig.getTeleportedModeSpeeds().get("bike")
 						/ routeConfig.getBeelineDistanceFactors().get("bike"), new CrowflyDistancePredictor());
 
-				TripPredictor carPredictor = new NetworkPathPredictor(
-						new QueueBasedThreadSafeDijkstra(config.getNumberOfThreads(), network,
-								new OnlyTimeDependentTravelDisutility(travelTime), travelTime));
+				TripPredictor carPredictor = new FixedSpeedPredictor(routeConfig.getTeleportedModeSpeeds().get("car")
+						/ routeConfig.getBeelineDistanceFactors().get("car"), new CrowflyDistancePredictor());
+				//TripPredictor carPredictor = new NetworkPathPredictor(
+				//		new QueueBasedThreadSafeDijkstra(config.getNumberOfThreads(), network,
+				//				new OnlyTimeDependentTravelDisutility(travelTime), travelTime));
 
 				ModeChoiceAlternative carAlternative = new BasicModeChoiceAlternative(carParameters, carPredictor,
 						carCache);
@@ -212,5 +215,14 @@ public class UserMeeting {
 		ptRoutingParams.setTeleportedModeFreespeedFactor(null);
 		ptRoutingParams.setBeelineDistanceFactor(2.3);
 		ptRoutingParams.setTeleportedModeSpeed(12.0 * 1000.0 / 3600.0);
+		
+		ModeRoutingParams carRoutingParams = new ModeRoutingParams("car");
+		carRoutingParams.setTeleportedModeFreespeedFactor(null);
+		carRoutingParams.setBeelineDistanceFactor(2.3);
+		carRoutingParams.setTeleportedModeSpeed(20.0 * 1000.0 / 3600.0);
+		config.plansCalcRoute().addModeRoutingParams(carRoutingParams);
+		
+		config.plansCalcRoute().setNetworkModes(Collections.emptyList());
+		config.qsim().setMainModes(Collections.emptyList());
 	}
 }
