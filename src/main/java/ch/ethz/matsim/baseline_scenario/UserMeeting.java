@@ -174,6 +174,9 @@ public class UserMeeting {
 	}
 
 	static public void applyParameters(Config config) {
+		config.qsim().setFlowCapFactor(1000000.0);
+		config.qsim().setStorageCapFactor(1000000.0);
+		
 		config.planCalcScore().setMarginalUtilityOfMoney(1.0);
 		config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(0.0);
 		config.planCalcScore().setMarginalUtlOfWaitingPt_utils_hr(0.0);
@@ -219,7 +222,7 @@ public class UserMeeting {
 		ModeRoutingParams carRoutingParams = new ModeRoutingParams("car");
 		carRoutingParams.setTeleportedModeFreespeedFactor(null);
 		carRoutingParams.setBeelineDistanceFactor(2.3);
-		carRoutingParams.setTeleportedModeSpeed(20.0 * 1000.0 / 3600.0);
+		carRoutingParams.setTeleportedModeSpeed(12.0 * 1000.0 / 3600.0);
 		config.plansCalcRoute().addModeRoutingParams(carRoutingParams);
 		
 		config.plansCalcRoute().setNetworkModes(Collections.emptyList());
