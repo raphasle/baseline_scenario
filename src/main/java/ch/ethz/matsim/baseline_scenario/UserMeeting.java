@@ -93,7 +93,7 @@ public class UserMeeting {
 				ModeChoiceMNL model = new ModeChoiceMNL(MatsimRandom.getRandom(), chainAlternatives, network,
 						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING);
 
-				BasicModeChoiceParameters carParameters = new BasicModeChoiceParameters(0.0, -0.62 / 1000.0,
+				BasicModeChoiceParameters carParameters = new BasicModeChoiceParameters(-4.0, -0.62 / 1000.0,
 						-23.29 / 3600.0, true);
 				BasicModeChoiceParameters ptParameters = new BasicModeChoiceParameters(0.0, -0.5 / 1000.0,
 						-14.43 / 3600.0, false);
@@ -182,7 +182,7 @@ public class UserMeeting {
 		config.planCalcScore().setMarginalUtlOfWaitingPt_utils_hr(0.0);
 
 		ModeParams carParameters = new ModeParams("car");
-		carParameters.setConstant(0.0);
+		carParameters.setConstant(-4.0);
 		carParameters.setMarginalUtilityOfTraveling(-23.29);
 		carParameters.setMonetaryDistanceRate(-0.62 / 1000.0);
 
