@@ -51,7 +51,7 @@ public class RunScenario {
 		
 		new RemoveLongPlans(10).run(scenario.getPopulation());
 		new ResetLegsToWalk().run(scenario.getPopulation());
-		new Downsample(0.02, new Random()).run(scenario.getPopulation());
+		new Downsample(0.02, new Random(0)).run(scenario.getPopulation());
 		
 		UserMeeting.applyModeChoice(controler, useBestResponse);
 
