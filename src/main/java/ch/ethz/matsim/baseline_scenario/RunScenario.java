@@ -27,6 +27,7 @@ public class RunScenario {
 		config.qsim().setNumberOfThreads(Integer.parseInt(args[2]));
 		config.controler().setWriteEventsInterval(0);
 		config.controler().setWritePlansInterval(0);
+		config.linkStats().setWriteLinkStatsInterval(0);
 		
 		UserMeeting.applyParameters(config);
 		
