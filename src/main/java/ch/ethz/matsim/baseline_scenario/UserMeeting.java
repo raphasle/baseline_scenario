@@ -90,10 +90,12 @@ public class UserMeeting {
 				
 				ChainAlternatives chainAlternatives = new AsMatsimChainAlternatives(alternatives);
 				
+				double prior = 1e-3;
+				
 				ModeChoiceMNL model = new ModeChoiceMNL(MatsimRandom.getRandom(), chainAlternatives, network,
-						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING);
+						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING, prior);
 
-				BasicModeChoiceParameters carParameters = new BasicModeChoiceParameters(-4.0, -0.62 / 1000.0,
+				BasicModeChoiceParameters carParameters = new BasicModeChoiceParameters(0.0, -0.2 / 1000.0,
 						-23.29 / 3600.0, true);
 				BasicModeChoiceParameters ptParameters = new BasicModeChoiceParameters(0.0, -0.5 / 1000.0,
 						-14.43 / 3600.0, false);
@@ -115,8 +117,8 @@ public class UserMeeting {
 				//		new QueueBasedThreadSafeDijkstra(config.getNumberOfThreads(), network,
 				//				new OnlyTimeDependentTravelDisutility(travelTime), travelTime));
 
-				ModeChoiceAlternative carAlternative = new BasicModeChoiceAlternative(carParameters, carPredictor,
-						carCache);
+				ModeChoiceAlternative carAlternative = new BasicModeChoiceAlternative(carParameters, carPredictor);//,
+				//		carCache);
 				ModeChoiceAlternative ptAlternative = new BasicModeChoiceAlternative(ptParameters, ptPredictor);
 				ModeChoiceAlternative walkAlternative = new BasicModeChoiceAlternative(walkParameters, walkPredictor);
 				ModeChoiceAlternative bikeAlternative = new BasicModeChoiceAlternative(bikeParameters, bikePredictor);
@@ -182,9 +184,9 @@ public class UserMeeting {
 		config.planCalcScore().setMarginalUtlOfWaitingPt_utils_hr(0.0);
 
 		ModeParams carParameters = new ModeParams("car");
-		carParameters.setConstant(-4.0);
+		carParameters.setConstant(0.0);
 		carParameters.setMarginalUtilityOfTraveling(-23.29);
-		carParameters.setMonetaryDistanceRate(-0.62 / 1000.0);
+		carParameters.setMonetaryDistanceRate(-0.2 / 1000.0);
 
 		ModeParams ptParameters = new ModeParams("pt");
 		ptParameters.setConstant(0.0);
@@ -217,12 +219,12 @@ public class UserMeeting {
 		ModeRoutingParams ptRoutingParams = config.plansCalcRoute().getModeRoutingParams().get("pt");
 		ptRoutingParams.setTeleportedModeFreespeedFactor(null);
 		ptRoutingParams.setBeelineDistanceFactor(2.3);
-		ptRoutingParams.setTeleportedModeSpeed(12.0 * 1000.0 / 3600.0);
+		ptRoutingParams.setTeleportedModeSpeed(10.0 * 1000.0 / 3600.0);
 		
 		ModeRoutingParams carRoutingParams = new ModeRoutingParams("car");
 		carRoutingParams.setTeleportedModeFreespeedFactor(null);
 		carRoutingParams.setBeelineDistanceFactor(2.3);
-		carRoutingParams.setTeleportedModeSpeed(12.0 * 1000.0 / 3600.0);
+		carRoutingParams.setTeleportedModeSpeed(20.0 * 1000.0 / 3600.0);
 		config.plansCalcRoute().addModeRoutingParams(carRoutingParams);
 		
 		config.plansCalcRoute().setNetworkModes(Collections.emptyList());
