@@ -90,7 +90,7 @@ public class UserMeeting {
 				
 				ChainAlternatives chainAlternatives = new AsMatsimChainAlternatives(alternatives);
 				
-				double prior = 1e-3;
+				double prior = 1e-12;
 				
 				ModeChoiceMNL model = new ModeChoiceMNL(MatsimRandom.getRandom(), chainAlternatives, network,
 						useBestResponse ? ModeChoiceMNL.Mode.BEST_RESPONSE : ModeChoiceMNL.Mode.SAMPLING, prior);
@@ -136,38 +136,38 @@ public class UserMeeting {
 	static public void applyReplanningForModeChoice(Config config) {
 		config.strategy().clearStrategySettings();
 
-		StrategySettings reroute = new StrategySettings();
+		/*StrategySettings reroute = new StrategySettings();
 		reroute.setStrategyName("ReRoute");
 		reroute.setWeight(0.1);
-		config.strategy().addStrategySettings(reroute);
+		config.strategy().addStrategySettings(reroute);*/
 
 		StrategySettings modeChoice = new StrategySettings();
 		modeChoice.setStrategyName("ModeChoiceStrategy");
-		modeChoice.setWeight(0.1);
+		modeChoice.setWeight(0.3);
 		config.strategy().addStrategySettings(modeChoice);
 
 		StrategySettings selection = new StrategySettings();
 		selection.setStrategyName("ChangeExpBeta");
-		selection.setWeight(0.8);
+		selection.setWeight(0.7);
 		config.strategy().addStrategySettings(selection);
 	}
 
 	static public void applyReplanningForSubtourModeChoice(Config config) {
 		config.strategy().clearStrategySettings();
 
-		StrategySettings reroute = new StrategySettings();
+		/*StrategySettings reroute = new StrategySettings();
 		reroute.setStrategyName("ReRoute");
 		reroute.setWeight(0.1);
-		config.strategy().addStrategySettings(reroute);
+		config.strategy().addStrategySettings(reroute);*/
 
 		StrategySettings subtourModeChoice = new StrategySettings();
 		subtourModeChoice.setStrategyName("SubtourModeChoice");
-		subtourModeChoice.setWeight(0.1);
+		subtourModeChoice.setWeight(0.3);
 		config.strategy().addStrategySettings(subtourModeChoice);
 
 		StrategySettings selection = new StrategySettings();
 		selection.setStrategyName("ChangeExpBeta");
-		selection.setWeight(0.8);
+		selection.setWeight(0.7);
 		config.strategy().addStrategySettings(selection);
 
 		config.subtourModeChoice().setChainBasedModes(new String[] { "car", "bike" });

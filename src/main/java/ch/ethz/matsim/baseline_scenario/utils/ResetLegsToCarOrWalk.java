@@ -10,7 +10,7 @@ public class ResetLegsToCarOrWalk {
 	public void run(Population population) {
 		for (Person person : population.getPersons().values()) {
 			for (Plan plan : person.getPlans()) {
-				if (PersonUtils.hasLicense(person) && !(PersonUtils.getCarAvail(person).equals("never") || PersonUtils.getCarAvail(person).equals("no"))) {
+				if (PersonUtils.hasLicense(person) && !(PersonUtils.getCarAvail(person).equals("never") || PersonUtils.getLicense(person).equals("no"))) {
 					TripStructureUtils.getLegs(plan).forEach(leg -> { leg.setMode("car"); leg.setRoute(null); });
 				} else {
 					TripStructureUtils.getLegs(plan).forEach(leg -> { leg.setMode("walk"); leg.setRoute(null); });

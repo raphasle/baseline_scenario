@@ -26,7 +26,7 @@ public class RunScenario {
 		config.global().setNumberOfThreads(Integer.parseInt(args[1]));
 		config.qsim().setNumberOfThreads(Integer.parseInt(args[2]));
 		config.controler().setWriteEventsInterval(0);
-		config.controler().setWritePlansInterval(0);
+		config.controler().setWritePlansInterval(200);
 		config.linkStats().setWriteLinkStatsInterval(0);
 		config.counts().setWriteCountsInterval(0);
 		
