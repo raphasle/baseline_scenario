@@ -1,5 +1,7 @@
 package ch.ethz.matsim.baseline_scenario;
 
+import java.util.Random;
+
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
@@ -9,6 +11,7 @@ import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.scenario.ScenarioUtils;
 
+import ch.ethz.ivt.matsim.playgrounds.sebhoerl.utils.Downsample;
 import ch.ethz.matsim.baseline_scenario.scoring.BaselineScoringFunctionFactory;
 import ch.ethz.matsim.baseline_scenario.scoring.ScoreDistributionListener;
 import ch.ethz.matsim.baseline_scenario.utils.ResetLegsToWalk;
@@ -46,6 +49,7 @@ public class RunScenario {
 		
 		new RemoveLongPlans(10).run(scenario.getPopulation());
 		new ResetLegsToWalk().run(scenario.getPopulation());
+		new Downsample(0.05, new Random());
 		
 		UserMeeting.applyModeChoice(controler, useBestResponse);
 
