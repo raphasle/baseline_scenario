@@ -14,7 +14,7 @@ import org.matsim.core.scenario.ScenarioUtils;
 import ch.ethz.ivt.matsim.playgrounds.sebhoerl.utils.Downsample;
 import ch.ethz.matsim.baseline_scenario.scoring.BaselineScoringFunctionFactory;
 import ch.ethz.matsim.baseline_scenario.scoring.ScoreDistributionListener;
-import ch.ethz.matsim.baseline_scenario.utils.ResetLegsToWalk;
+import ch.ethz.matsim.baseline_scenario.utils.ResetLegsToCarOrWalk;
 import ch.ethz.matsim.mode_choice.analysis.VisitedChainCounter;
 import ch.ethz.matsim.mode_choice.mnl.BasicModeChoiceParameters;
 import ch.ethz.matsim.mode_choice.run.RemoveLongPlans;
@@ -28,6 +28,7 @@ public class RunScenario {
 		config.controler().setWriteEventsInterval(0);
 		config.controler().setWritePlansInterval(0);
 		config.linkStats().setWriteLinkStatsInterval(0);
+		config.counts().setWriteCountsInterval(0);
 		
 		UserMeeting.applyParameters(config);
 		
@@ -51,7 +52,7 @@ public class RunScenario {
 		Controler controler = new Controler(scenario);
 		
 		new RemoveLongPlans(10).run(scenario.getPopulation());
-		new ResetLegsToWalk().run(scenario.getPopulation());
+		new ResetLegsToCarOrWalk().run(scenario.getPopulation());
 		new Downsample(0.02, new Random(0)).run(scenario.getPopulation());
 		
 		UserMeeting.applyModeChoice(controler, useBestResponse);
