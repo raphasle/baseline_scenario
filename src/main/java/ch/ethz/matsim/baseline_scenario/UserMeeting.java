@@ -126,7 +126,7 @@ public class UserMeeting {
 				model.addModeAlternative("car", carAlternative);
 				model.addModeAlternative("pt", ptAlternative);
 				model.addModeAlternative("walk", walkAlternative);
-				//model.addModeAlternative("bike", bikeAlternative);
+				model.addModeAlternative("bike", bikeAlternative);
 
 				return model;
 			}
@@ -170,9 +170,9 @@ public class UserMeeting {
 		selection.setWeight(0.8);
 		config.strategy().addStrategySettings(selection);
 
-		config.subtourModeChoice().setChainBasedModes(new String[] { "car" }); //, "bike" });
+		config.subtourModeChoice().setChainBasedModes(new String[] { "car", "bike" });
 		config.subtourModeChoice().setConsiderCarAvailability(true);
-		config.subtourModeChoice().setModes(new String[] { "car", "pt", "walk" }); // "bike",
+		config.subtourModeChoice().setModes(new String[] { "car", "pt", "walk", "bike" });
 	}
 
 	static public void applyParameters(Config config) {
