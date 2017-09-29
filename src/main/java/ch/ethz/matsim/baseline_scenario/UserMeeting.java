@@ -111,14 +111,13 @@ public class UserMeeting {
 				TripPredictor bikePredictor = new FixedSpeedPredictor(routeConfig.getTeleportedModeSpeeds().get("bike")
 						/ routeConfig.getBeelineDistanceFactors().get("bike"), new CrowflyDistancePredictor());
 
-				TripPredictor carPredictor = new FixedSpeedPredictor(routeConfig.getTeleportedModeSpeeds().get("car")
-						/ routeConfig.getBeelineDistanceFactors().get("car"), new CrowflyDistancePredictor());
-				//TripPredictor carPredictor = new NetworkPathPredictor(
-				//		new QueueBasedThreadSafeDijkstra(config.getNumberOfThreads(), network,
-				//				new OnlyTimeDependentTravelDisutility(travelTime), travelTime));
+				//TripPredictor carPredictor = new FixedSpeedPredictor(routeConfig.getTeleportedModeSpeeds().get("car")
+				//		/ routeConfig.getBeelineDistanceFactors().get("car"), new CrowflyDistancePredictor());
+				TripPredictor carPredictor = new NetworkPathPredictor(
+						new QueueBasedThreadSafeDijkstra(config.getNumberOfThreads(), network,
+								new OnlyTimeDependentTravelDisutility(travelTime), travelTime));
 
-				ModeChoiceAlternative carAlternative = new BasicModeChoiceAlternative(carParameters, carPredictor);//,
-				//		carCache);
+				ModeChoiceAlternative carAlternative = new BasicModeChoiceAlternative(carParameters, carPredictor, carCache);
 				ModeChoiceAlternative ptAlternative = new BasicModeChoiceAlternative(ptParameters, ptPredictor);
 				ModeChoiceAlternative walkAlternative = new BasicModeChoiceAlternative(walkParameters, walkPredictor);
 				ModeChoiceAlternative bikeAlternative = new BasicModeChoiceAlternative(bikeParameters, bikePredictor);
@@ -221,13 +220,13 @@ public class UserMeeting {
 		ptRoutingParams.setBeelineDistanceFactor(2.3);
 		ptRoutingParams.setTeleportedModeSpeed(10.0 * 1000.0 / 3600.0);
 		
-		ModeRoutingParams carRoutingParams = new ModeRoutingParams("car");
-		carRoutingParams.setTeleportedModeFreespeedFactor(null);
-		carRoutingParams.setBeelineDistanceFactor(2.3);
-		carRoutingParams.setTeleportedModeSpeed(20.0 * 1000.0 / 3600.0);
-		config.plansCalcRoute().addModeRoutingParams(carRoutingParams);
+		//ModeRoutingParams carRoutingParams = new ModeRoutingParams("car");
+		//carRoutingParams.setTeleportedModeFreespeedFactor(null);
+		//carRoutingParams.setBeelineDistanceFactor(2.3);
+		//carRoutingParams.setTeleportedModeSpeed(20.0 * 1000.0 / 3600.0);
+		//config.plansCalcRoute().addModeRoutingParams(carRoutingParams);
 		
-		config.plansCalcRoute().setNetworkModes(Collections.emptyList());
-		config.qsim().setMainModes(Collections.emptyList());
+		//config.plansCalcRoute().setNetworkModes(Collections.emptyList());
+		//config.qsim().setMainModes(Collections.emptyList());
 	}
 }
