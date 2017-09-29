@@ -41,6 +41,7 @@ public class BaselineScoringFunctionFactory implements ScoringFunctionFactory {
 	@Override
 	public ScoringFunction createNewScoringFunction(Person person) {
 		ScoringParameters.Builder scoringBuilder = new ScoringParameters.Builder(scoringConfig, scoringConfig.getScoringParameters(null), scenarioConfig);
+		scoringBuilder.setAbortedPlanScore(-10000.0);
 		
 		for (Plan plan : person.getPlans()) {
 			for (PlanElement element : plan.getPlanElements()) {
@@ -66,7 +67,7 @@ public class BaselineScoringFunctionFactory implements ScoringFunctionFactory {
 		//sumScoringFunction.addScoringFunction(new CharyparNagelActivityScoring(parameters));
 		sumScoringFunction.addScoringFunction(new CharyparNagelLegScoring(parameters, network));
 		//sumScoringFunction.addScoringFunction(new CharyparNagelMoneyScoring(parameters));
-		//sumScoringFunction.addScoringFunction(new CharyparNagelAgentStuckScoring(parameters));
+		sumScoringFunction.addScoringFunction(new CharyparNagelAgentStuckScoring(parameters));
 		
 		return sumScoringFunction;
 	}
