@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.matsim.api.core.v01.population.Person;
+import org.matsim.api.core.v01.population.Plan;
 import org.matsim.api.core.v01.population.Population;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.core.controler.events.IterationEndsEvent;
@@ -37,20 +38,25 @@ public class ModeShareListener implements IterationEndsListener {
 			Map<String, AtomicInteger> counts = new TreeMap<>();
 
 			for (Person person : population.getPersons().values()) {
-				List<String> modes = TripStructureUtils
-						.getTrips(person.getSelectedPlan(),
-								new StageActivityTypesImpl(PtConstants.TRANSIT_ACTIVITY_TYPE))
-						.stream()
-						.filter(t -> !t.getOriginActivity().getLinkId().equals(t.getDestinationActivity().getLinkId()))
-						.map(t -> t.getLegsOnly().get(0).getMode()).map(m -> m.contains("transit") ? "pt" : m)
-						.collect(Collectors.toList());
-
-				for (String mode : modes) {
-					if (!counts.containsKey(mode)) {
-						counts.put(mode, new AtomicInteger(0));
+				Plan plan = person.getSelectedPlan();
+				Double score = plan.getScore();
+				
+				if (!(score == null || score == 0.0 || score <= -10000)) {
+					List<String> modes = TripStructureUtils
+							.getTrips(plan,
+									new StageActivityTypesImpl(PtConstants.TRANSIT_ACTIVITY_TYPE))
+							.stream()
+							.filter(t -> !t.getOriginActivity().getLinkId().equals(t.getDestinationActivity().getLinkId()))
+							.map(t -> t.getLegsOnly().get(0).getMode()).map(m -> m.contains("transit") ? "pt" : m)
+							.collect(Collectors.toList());
+	
+					for (String mode : modes) {
+						if (!counts.containsKey(mode)) {
+							counts.put(mode, new AtomicInteger(0));
+						}
+	
+						counts.get(mode).incrementAndGet();
 					}
-
-					counts.get(mode).incrementAndGet();
 				}
 			}
 

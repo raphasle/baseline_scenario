@@ -97,11 +97,11 @@ public class UserMeeting {
 
 				BasicModeChoiceParameters carParameters = new BasicModeChoiceParameters(-4.0, -0.2 / 1000.0,
 						-23.29 / 3600.0, true);
-				BasicModeChoiceParameters ptParameters = new BasicModeChoiceParameters(0.0, -0.5 / 1000.0,
+				BasicModeChoiceParameters ptParameters = new BasicModeChoiceParameters(-0.01, -0.5 / 1000.0,
 						-14.43 / 3600.0, false);
-				BasicModeChoiceParameters walkParameters = new BasicModeChoiceParameters(0.0, 0.0, -33.2 / 3600.0,
+				BasicModeChoiceParameters walkParameters = new BasicModeChoiceParameters(-0.02, 0.0, -33.2 / 3600.0,
 						false);
-				BasicModeChoiceParameters bikeParameters = new BasicModeChoiceParameters(0.0, 0.0, -73.2 / 3600.0,
+				BasicModeChoiceParameters bikeParameters = new BasicModeChoiceParameters(-0.03, 0.0, -73.2 / 3600.0,
 						true);
 
 				TripPredictor ptPredictor = new FixedSpeedPredictor(routeConfig.getTeleportedModeSpeeds().get("pt")
@@ -189,17 +189,17 @@ public class UserMeeting {
 		carParameters.setMonetaryDistanceRate(-0.2 / 1000.0);
 
 		ModeParams ptParameters = new ModeParams("pt");
-		ptParameters.setConstant(0.0);
+		ptParameters.setConstant(-0.01);
 		ptParameters.setMarginalUtilityOfTraveling(-14.43);
 		ptParameters.setMonetaryDistanceRate(-0.5 / 1000.0);
 
 		ModeParams walkParameters = new ModeParams("walk");
-		walkParameters.setConstant(0.0);
+		walkParameters.setConstant(-0.02);
 		walkParameters.setMarginalUtilityOfTraveling(-33.2);
 		walkParameters.setMonetaryDistanceRate(0.0);
 
 		ModeParams bikeParameters = new ModeParams("bike");
-		bikeParameters.setConstant(0.0);
+		bikeParameters.setConstant(-0.03);
 		bikeParameters.setMarginalUtilityOfTraveling(-73.2);
 		bikeParameters.setMonetaryDistanceRate(0.0);
 
