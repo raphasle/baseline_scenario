@@ -38,12 +38,19 @@ public class ModeShareListener implements IterationEndsListener {
 			Map<String, AtomicInteger> counts = new TreeMap<>();
 
 			for (Person person : population.getPersons().values()) {
-				Plan plan = person.getSelectedPlan();
-				Double score = plan.getScore();
+				Plan selectedPlan = person.getSelectedPlan();
+				
+				for (Plan plan : person.getPlans()) {
+					if (plan.getScore() != null && (selectedPlan.getScore() == null || selectedPlan.getScore() < plan.getScore())) {
+						selectedPlan = plan;
+					}
+				}
+				
+				Double score = selectedPlan.getScore();
 				
 				if (!(score == null || score == 0.0 || score <= -10000)) {
 					List<String> modes = TripStructureUtils
-							.getTrips(plan,
+							.getTrips(selectedPlan,
 									new StageActivityTypesImpl(PtConstants.TRANSIT_ACTIVITY_TYPE))
 							.stream()
 							.filter(t -> !t.getOriginActivity().getLinkId().equals(t.getDestinationActivity().getLinkId()))
