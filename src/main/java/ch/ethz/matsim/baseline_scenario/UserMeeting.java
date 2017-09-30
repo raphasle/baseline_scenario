@@ -2,8 +2,11 @@ package ch.ethz.matsim.baseline_scenario;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Network;
@@ -19,6 +22,7 @@ import org.matsim.core.config.groups.StrategyConfigGroup.StrategySettings;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.gbl.MatsimRandom;
+import org.matsim.core.router.TripStructureUtils.Trip;
 import org.matsim.core.router.costcalculators.OnlyTimeDependentTravelDisutility;
 import org.matsim.core.router.util.TravelTime;
 
@@ -29,6 +33,7 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 import ch.ethz.matsim.mode_choice.ModeChoiceModel;
+import ch.ethz.matsim.mode_choice.ModeChoiceTrip;
 import ch.ethz.matsim.mode_choice.alternatives.AsMatsimChainAlternatives;
 import ch.ethz.matsim.mode_choice.alternatives.ChainAlternatives;
 import ch.ethz.matsim.mode_choice.alternatives.TripChainAlternatives;
@@ -42,6 +47,7 @@ import ch.ethz.matsim.mode_choice.mnl.prediction.HashPredictionCache;
 import ch.ethz.matsim.mode_choice.mnl.prediction.NetworkPathPredictor;
 import ch.ethz.matsim.mode_choice.mnl.prediction.PredictionCache;
 import ch.ethz.matsim.mode_choice.mnl.prediction.PredictionCacheCleaner;
+import ch.ethz.matsim.mode_choice.mnl.prediction.TripPrediction;
 import ch.ethz.matsim.mode_choice.mnl.prediction.TripPredictor;
 import ch.ethz.matsim.mode_choice.replanning.ModeChoiceStrategy;
 import ch.ethz.matsim.mode_choice.utils.MatsimAlternativesReader;
@@ -67,7 +73,7 @@ public class UserMeeting {
 			@Provides
 			@Named("car")
 			public PredictionCache providePredictionCacheForCar() {
-				return new HashPredictionCache();
+				return new BinnedPersonUnawarePredictionCache(60); // new HashPredictionCache();
 			}
 
 			@Singleton
@@ -230,5 +236,35 @@ public class UserMeeting {
 		
 		//config.plansCalcRoute().setNetworkModes(Collections.emptyList());
 		//config.qsim().setMainModes(Collections.emptyList());
+	}
+	
+	static class BinnedPersonUnawarePredictionCache implements PredictionCache {
+		final private Map<String, TripPrediction> cache = new HashMap<>();
+		final private int binSize;
+		
+		public BinnedPersonUnawarePredictionCache(int binSize) {
+			this.binSize = binSize;
+		}
+		
+		private String getIdentifier(ModeChoiceTrip trip) {
+			int bin = (int) trip.getDepartureTime() / binSize;
+			return trip.getOriginLink().getId().toString() + ":" + trip.getDestinationLink().getId().toString() + bin;
+		}
+		
+		@Override
+		public TripPrediction get(ModeChoiceTrip trip) {
+			return cache.get(getIdentifier(trip));
+		}
+
+		@Override
+		public void put(ModeChoiceTrip trip, TripPrediction prediction) {
+			cache.put(getIdentifier(trip), prediction);
+		}
+
+		@Override
+		public void clear() {
+			cache.clear();
+		}
+		
 	}
 }
