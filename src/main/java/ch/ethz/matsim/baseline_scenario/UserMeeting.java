@@ -14,6 +14,7 @@ import org.matsim.core.config.groups.GlobalConfigGroup;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ModeParams;
 import org.matsim.core.config.groups.PlansCalcRouteConfigGroup;
 import org.matsim.core.config.groups.PlansCalcRouteConfigGroup.ModeRoutingParams;
+import org.matsim.core.config.groups.QSimConfigGroup.TrafficDynamics;
 import org.matsim.core.config.groups.StrategyConfigGroup.StrategySettings;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
@@ -175,8 +176,9 @@ public class UserMeeting {
 	}
 
 	static public void applyParameters(Config config) {
-		config.qsim().setFlowCapFactor(1000000.0);
-		config.qsim().setStorageCapFactor(1000000.0);
+		config.qsim().setFlowCapFactor(0.03);
+		config.qsim().setStorageCapFactor(1.0);
+		config.qsim().setTrafficDynamics(TrafficDynamics.kinematicWaves);
 		
 		config.planCalcScore().setMarginalUtilityOfMoney(1.0);
 		config.planCalcScore().setMarginalUtlOfWaiting_utils_hr(0.0);
