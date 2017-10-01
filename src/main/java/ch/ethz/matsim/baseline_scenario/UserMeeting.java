@@ -82,9 +82,9 @@ public class UserMeeting {
 					GlobalConfigGroup config, @Named("car") PredictionCache carCache,
 					PlansCalcRouteConfigGroup routeConfig) {
 				
-				//ChainAlternatives chainAlternatives = new TripChainAlternatives(true);
+				ChainAlternatives chainAlternatives = new TripChainAlternatives(false);
 				
-				MatsimAlternativesReader reader = new MatsimAlternativesReader();
+				/*MatsimAlternativesReader reader = new MatsimAlternativesReader();
 				
 				Map<Id<Person>, List<List<String>>> alternatives;
 				
@@ -95,7 +95,7 @@ public class UserMeeting {
 					throw new RuntimeException();
 				}
 				
-				ChainAlternatives chainAlternatives = new AsMatsimChainAlternatives(alternatives);
+				ChainAlternatives chainAlternatives = new AsMatsimChainAlternatives(alternatives);*/
 				
 				double prior = 1e-12;
 				
