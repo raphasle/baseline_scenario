@@ -2,8 +2,11 @@ package ch.ethz.matsim.baseline_scenario.analysis.trips.listeners;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.events.ActivityEndEvent;
@@ -46,7 +49,7 @@ public class TripListener implements ActivityStartEventHandler, ActivityEndEvent
 
 	final private Collection<TripItem> trips = new LinkedList<>();
 	final private Map<Id<Person>, TripListenerItem> ongoing = new HashMap<>();
-	final private Map<Id<Vehicle>, Id<Person>> passengers = new HashMap<>();
+	final private Map<Id<Vehicle>, Set<Id<Person>>> passengers = new HashMap<>();
 	final private Map<Id<Person>, Integer> tripIndex = new HashMap<>();
 
 	public TripListener(Network network, StageActivityTypes stageActivityTypes, HomeActivityTypes homeActivityTypes,
@@ -72,6 +75,9 @@ public class TripListener implements ActivityStartEventHandler, ActivityEndEvent
 
 	@Override
 	public void handleEvent(ActivityEndEvent event) {
+		if (event.getPersonId().toString().contains("av")) return;
+		if (event.getPersonId().toString().startsWith("pt")) return;
+		
 		if (!stageActivityTypes.isStageActivity(event.getActType())) {
 			Integer personTripIndex = tripIndex.get(event.getPersonId());
 			network.getLinks().get(event.getLinkId()).getCoord();
@@ -91,11 +97,17 @@ public class TripListener implements ActivityStartEventHandler, ActivityEndEvent
 
 	@Override
 	public void handleEvent(PersonDepartureEvent event) {
+		if (event.getPersonId().toString().contains("av")) return;
+		if (event.getPersonId().toString().startsWith("pt")) return;
+		
 		ongoing.get(event.getPersonId()).elements.add(factory.createLeg(event.getLegMode()));
 	}
 
 	@Override
 	public void handleEvent(ActivityStartEvent event) {
+		if (event.getPersonId().toString().contains("av")) return;
+		if (event.getPersonId().toString().startsWith("pt")) return;
+		
 		if (stageActivityTypes.isStageActivity(event.getActType())) {
 			ongoing.get(event.getPersonId()).elements
 					.add(factory.createActivityFromLinkId(event.getActType(), event.getLinkId()));
@@ -119,21 +131,34 @@ public class TripListener implements ActivityStartEventHandler, ActivityEndEvent
 
 	@Override
 	public void handleEvent(PersonEntersVehicleEvent event) {
-		passengers.put(event.getVehicleId(), event.getPersonId());
+		if (!passengers.containsKey(event.getVehicleId())) {
+			passengers.put(event.getVehicleId(), new HashSet<>());
+		}
+		
+		passengers.get(event.getVehicleId()).add(event.getPersonId());
 	}
 
 	@Override
 	public void handleEvent(PersonLeavesVehicleEvent event) {
-		passengers.remove(event.getVehicleId());
+		passengers.get(event.getVehicleId()).remove(event.getPersonId());
 	}
 
 	@Override
 	public void handleEvent(LinkEnterEvent event) {
-		ongoing.get(passengers.get(event.getVehicleId())).route.add(event.getLinkId());
+		if (passengers.containsKey(event.getVehicleId())) {
+			for (Id<Person> passengerId: passengers.get(event.getVehicleId())) {
+				if (passengerId.toString().contains("av")) continue;
+				if (passengerId.toString().startsWith("pt")) continue;
+				
+				ongoing.get(passengerId).route.add(event.getLinkId());
+			}
+		}
 	}
 
 	private double getNetworkDistance(TripListenerItem trip) {
-		if (mainModeIdentifier.identifyMainMode(trip.elements).equals("car")) {
+		String mainMode = mainModeIdentifier.identifyMainMode(trip.elements);
+		
+		if (mainMode.equals("car") || mainMode.equals("av")) {
 			double distance = 0.0;
 			
 			if (trip.route.size() > 0) {
