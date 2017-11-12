@@ -32,6 +32,7 @@ public class TrafficCountPlanSelector {
 	final private double rerouting;
 	final private int numberOfThreads;
 	final private int maximumNumberOfIterations;
+	final private double crossingPenalty;
 
 	final private Network network;
 	final private Collection<DailyCountItem> countItems;
@@ -40,7 +41,7 @@ public class TrafficCountPlanSelector {
 	final private BufferedWriter countWriter;
 
 	public TrafficCountPlanSelector(Network network, Collection<DailyCountItem> countItems, double scaling,
-			double rerouting, int numberOfThreads, String countOutputPath, int maximumNumberOfIterations)
+			double rerouting, int numberOfThreads, String countOutputPath, int maximumNumberOfIterations, double crossingPenalty)
 			throws FileNotFoundException {
 		this.network = network;
 		this.countItems = countItems;
@@ -49,6 +50,7 @@ public class TrafficCountPlanSelector {
 		this.numberOfThreads = numberOfThreads;
 		this.countWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(countOutputPath)));
 		this.maximumNumberOfIterations = maximumNumberOfIterations;
+		this.crossingPenalty = crossingPenalty;
 	}
 
 	public void run(Population population) throws IOException, InterruptedException {
@@ -93,7 +95,7 @@ public class TrafficCountPlanSelector {
 			currentObjective = choiceProblem.getObjective();
 
 			logger.info("  Calculating new travel time ...");
-			TravelTime travelTime = new CountTravelTime(scaling, network, persons, previousTravelTime);
+			TravelTime travelTime = new CountTravelTime(scaling, network, persons, previousTravelTime, crossingPenalty);
 
 			int n = (int) (persons.size() * rerouting);
 			int start = random.nextInt(persons.size() - n);
@@ -128,6 +130,6 @@ public class TrafficCountPlanSelector {
 		new PopulationReader(scenario).readFile(populationInput);
 
 		new TrafficCountPlanSelector(network, countItems, scaling, rerouting, numberOfThreads, countOutputPath,
-				maximumNumberOfIterations).run(scenario.getPopulation());
+				maximumNumberOfIterations, 0.0).run(scenario.getPopulation());
 	}
 }

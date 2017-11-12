@@ -21,7 +21,7 @@ import org.matsim.vehicles.Vehicle;
 public class CountTravelTime implements TravelTime {
 	final private Map<Link, List<Double>> travelTimes = new HashMap<>();
 	
-	public CountTravelTime(double scaling, Network network, Collection<Person> persons, TravelTime previousTravelTime) {
+	public CountTravelTime(double scaling, Network network, Collection<Person> persons, TravelTime previousTravelTime, double crossingPenalty) {
 		Map<Link, List<Integer>> counts = new HashMap<>();
 		int bins = 30 * 3600 / 3600;
 		
@@ -59,6 +59,18 @@ public class CountTravelTime implements TravelTime {
 				double capacity = link.getCapacity();
 				
 				double travelTime = freeflowTravelTime * (1.0 + 0.15 * Math.pow(count / (capacity * scaling), 4.0));
+				
+				boolean isMajor = true;
+
+				for (Link other : link.getToNode().getInLinks().values()) {
+					if (other.getCapacity() >= link.getCapacity()) {
+						isMajor = false;
+					}
+				}
+
+				if (!(isMajor || link.getToNode().getInLinks().size() == 1)) {
+					travelTime += crossingPenalty;
+				}
 
 				travelTimes.get(link).set(i, travelTime);
 			}
