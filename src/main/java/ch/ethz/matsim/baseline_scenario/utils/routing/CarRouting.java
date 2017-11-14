@@ -14,7 +14,7 @@ import org.matsim.api.core.v01.population.Person;
 import org.matsim.api.core.v01.population.Plan;
 import org.matsim.api.core.v01.population.Population;
 import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.population.routes.LinkNetworkRouteImpl;
+import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.population.routes.RouteUtils;
 import org.matsim.core.router.StageActivityTypesImpl;
 import org.matsim.core.router.TripStructureUtils;
@@ -78,7 +78,7 @@ public class CarRouting {
 		Path path = router.calcLeastCostPath(network.getLinks().get(originId).getToNode(),
 				network.getLinks().get(destinationId).getFromNode(), departureTime, null, null);
 
-		LinkNetworkRouteImpl route = new LinkNetworkRouteImpl(originId, destinationId);
+		NetworkRoute route = RouteUtils.createLinkNetworkRouteImpl(originId, destinationId);
 		route.setLinkIds(originId, NetworkUtils.getLinkIds(path.links), destinationId);
 		route.setTravelTime((int) path.travelTime);
 		route.setTravelCost(path.travelCost);
